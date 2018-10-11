@@ -9,7 +9,7 @@ namespace SMTPServer
     {
         internal void SendGreetingReply()
         {
-            this.SendMessage("220 " + ServerConfiguration.Name + " service ready");
+            this.SendMessage("220 " + serverConfiguration.Name + " service ready");
         }
     }
 }

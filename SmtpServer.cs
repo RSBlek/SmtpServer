@@ -38,7 +38,7 @@ namespace SMTPServer
 
         public override void OnDataReceived(TcpConnection tcpConnection, byte[] data)
         {
-            Console.WriteLine("Received: " + Encoding.ASCII.GetString(data));
+            connectionHandler.GetSmtpConnection(tcpConnection).ReceiveData(data);
         }
 
     }

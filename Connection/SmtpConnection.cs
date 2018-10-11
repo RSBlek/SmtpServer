@@ -27,7 +27,21 @@ namespace SMTPServer
 
         public void ReceiveData(byte[] data)
         {
+            dataBuffer.AddRange(data);
+            if (CheckCommandComplete())
+            {
+                dataBuffer.Clear();
+            }
+        }
 
+        private bool CheckCommandComplete()
+        {
+            if(dataBuffer.Count >= 2)
+            {
+                if (dataBuffer[dataBuffer.Count - 2] == '\r' && dataBuffer[dataBuffer.Count - 1] == '\n')
+                    return true;
+            }
+            return false;
         }
 
     }
