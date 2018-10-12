@@ -11,7 +11,7 @@ namespace SMTPServer
         public int Port { get => smtpServer._port; private set => smtpServer._port = value; }
         public int ConnectionBacklog { get => smtpServer._connectionBacklog; set => smtpServer._connectionBacklog = value; }
         public String Name { get => smtpServer._name; private set => smtpServer._name = value; }
-
+        public int MaximumLineLength { get; set; } = int.MaxValue;
         private readonly SmtpServer smtpServer;
 
         public SmtpServerConfiguration(SmtpServer smtpServer, IPAddress ipAddress, int port, string name)

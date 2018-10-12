@@ -7,9 +7,9 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
-        internal void SendGreetingReply()
+        internal void SendLineTooLongReply()
         {
-            SendMessage("220 " + serverConfiguration.Name + " service ready");
+            SendMessage("500 Line too long");
         }
     }
 }

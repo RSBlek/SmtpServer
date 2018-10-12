@@ -7,9 +7,9 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
-        internal void SendGreetingReply()
+        internal void SendParameterSyntaxErrorReply()
         {
-            SendMessage("220 " + serverConfiguration.Name + " service ready");
+            SendMessage("501 Syntax error in parameters or arguments");
         }
     }
 }

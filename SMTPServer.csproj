@@ -8,8 +8,4 @@
     <ProjectReference Include="..\TCPServer\TCPServer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Messages\Commands\" />
-  </ItemGroup>
-
 </Project>
