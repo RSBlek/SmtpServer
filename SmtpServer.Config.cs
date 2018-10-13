@@ -12,5 +12,11 @@ namespace SMTPServer
         internal int _port;
         internal int _connectionBacklog = 25;
         internal string _name;
+        internal int _maximumLineLength = Int32.MaxValue;
+        internal readonly List<String> _extensions = new List<string>()
+        {
+            "8BITMIME",
+        };
+
     }
 }

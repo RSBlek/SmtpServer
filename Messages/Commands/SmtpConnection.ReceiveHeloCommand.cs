@@ -5,11 +5,11 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
-        [SmtpCommandMethod("EHLO", 1)]
+        [SmtpCommandMethod("HELO", 1)]
         [AllowConnectionState(ConnectionState.GreetingSent)]
-        private void ReceiveEhloCommand(String message)
+        private void ReceiveHeloCommand(String message)
         {
-            SendEhloReply();
+            SendHeloReply();
         }
     }
 }

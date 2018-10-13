@@ -10,6 +10,7 @@ namespace SMTPServer
         public Int32 MinimumParameterCount { get; }
         public MethodInfo Method { get; }
         public List<ConnectionState> AllowedConnectionStates { get; } = new List<ConnectionState>();
+        public bool AllowEveryConnectionState { get; set; } = false;
 
         public SmtpCommand(string name, Int32 minimumParameterCount, MethodInfo methodInfo)
         {

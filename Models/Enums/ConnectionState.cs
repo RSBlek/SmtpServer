@@ -6,7 +6,11 @@ namespace SMTPServer
 {
     public enum ConnectionState
     {
+        Closed,
         Established,
         GreetingSent,
+        Initial,
+        MailTransactionStarted,
+        ReceivingMailData,
     }
 }

@@ -7,9 +7,9 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
-        internal void SendGreetingReply()
+        internal void SendBadCommandSequenceReply()
         {
-            SendMessage("220 " + serverConfiguration.Name + " service ready");
+            SendMessage("503 Bad sequence of commands");
         }
     }
 }

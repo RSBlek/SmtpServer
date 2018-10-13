@@ -18,6 +18,7 @@ namespace SMTPServer
                 {
                     SmtpCommand command = new SmtpCommand(attribute.Command, attribute.MinimumParameterCount, method);
                     command.AllowedConnectionStates.AddRange(GetAllowedConnectionStates(method));
+                    command.AllowEveryConnectionState = IsAllowedAtEveryConnectionState(method);
                     commands.Add(command.Name, command);
                 }
             }
@@ -32,10 +33,16 @@ namespace SMTPServer
                 return commands[commandName];
         }
 
-        private List<ConnectionState> GetAllowedConnectionStates(MethodInfo mi)
+        private bool IsAllowedAtEveryConnectionState(MethodInfo method)
+        {
+            Attribute attribute = method.GetCustomAttribute(typeof(AllowEveryConnectionState));
+            return attribute == null ? false : true;
+        }
+
+        private List<ConnectionState> GetAllowedConnectionStates(MethodInfo method)
         {
             List<ConnectionState> allowedConnectionStates = new List<ConnectionState>();
-            foreach (AllowConnectionState attr in mi.GetCustomAttributes(typeof(AllowConnectionState), true))
+            foreach (AllowConnectionState attr in method.GetCustomAttributes(typeof(AllowConnectionState), true))
             {
                 allowedConnectionStates.Add(attr.ConnectionState);
             }

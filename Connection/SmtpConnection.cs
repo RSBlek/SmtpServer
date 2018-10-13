@@ -8,12 +8,16 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
+        public ConnectionState ConnectionState { get; private set; } = ConnectionState.Established;
+
         internal SmtpServerConfiguration ServerConfiguration { get => serverConfiguration; }
 
         private readonly TcpConnection tcpConnection;
         private readonly List<byte> dataBuffer = new List<byte>();
         private readonly SmtpServerConfiguration serverConfiguration;
         private readonly SmtpCommandHandler commandHandler;
+
+        private readonly Mail mailBuffer = new Mail();
 
         public SmtpConnection(TcpConnection tcpConnection, SmtpServerConfiguration serverConfiguration, SmtpCommandHandler commandHandler)
         {
@@ -39,7 +43,13 @@ namespace SMTPServer
             SmtpCommand command = GetCommand(commandParts);
 
             if (command != null)
-                command.Method.Invoke(this, new object[] { commandMessage.Substring(command.Name.Length).TrimStart() });
+            {
+                if (command.AllowEveryConnectionState || command.AllowedConnectionStates.Contains(this.ConnectionState))
+                    command.Method.Invoke(this, new object[] { commandMessage.Substring(command.Name.Length).TrimStart() });
+                else
+                    SendBadCommandSequenceReply();
+            }
+                
 
             dataBuffer.Clear();
         }
@@ -72,11 +82,25 @@ namespace SMTPServer
 
         private bool CheckCommandComplete()
         {
-            if (dataBuffer.Count >= 2)
+            if(ConnectionState == ConnectionState.ReceivingMailData)
             {
-                if (dataBuffer[dataBuffer.Count - 2] == '\r' && dataBuffer[dataBuffer.Count - 1] == '\n')
-                    return true;
+                if (dataBuffer.Count >= 5)
+                {
+                    if (dataBuffer[dataBuffer.Count - 5] == '\r' && dataBuffer[dataBuffer.Count - 4] == '\n'
+                        && dataBuffer[dataBuffer.Count - 3] == '.'
+                        && dataBuffer[dataBuffer.Count - 2] == '\r' && dataBuffer[dataBuffer.Count - 1] == '\n')
+                        return true;
+                }
             }
+            else
+            {
+                if (dataBuffer.Count >= 2)
+                {
+                    if (dataBuffer[dataBuffer.Count - 2] == '\r' && dataBuffer[dataBuffer.Count - 1] == '\n')
+                        return true;
+                }
+            }
+            
             return false;
         }
 
