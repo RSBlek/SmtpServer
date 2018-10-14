@@ -37,7 +37,7 @@ namespace SMTPServer
             dataBuffer.AddRange(data);
             if (!CheckCommandComplete())
                 return;
-            String commandMessage = Encoding.ASCII.GetString(data, 0, data.Length - 2);
+            String commandMessage = Encoding.ASCII.GetString(dataBuffer.ToArray(), 0, dataBuffer.Count - 2);
             Logger.Log("Received: " + commandMessage);
             String[] commandParts = commandMessage.Split(' ');
             SmtpCommand command = GetCommand(commandParts);
