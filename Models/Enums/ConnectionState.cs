@@ -12,5 +12,6 @@ namespace SMTPServer
         Initial,
         MailTransactionStarted,
         ReceivingMailData,
+        ReadyForData,
     }
 }
