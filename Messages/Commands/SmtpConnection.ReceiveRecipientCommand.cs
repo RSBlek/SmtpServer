@@ -10,12 +10,12 @@ namespace SMTPServer
         [AllowConnectionState(ConnectionState.MailTransactionStarted)]
         private void RecieveRecipientCommand(String message)
         {
-            String[] messageParts = message.Split(' ');
-            Regex regex = new Regex("<.*>");
-            Match match = regex.Match(messageParts[1]);
+            Regex regex = new Regex(@"(?<=from:<)(.*?)(?=>)", RegexOptions.IgnoreCase);
+            Match match = regex.Match(message);
             if (!match.Success)
             {
                 mailBuffer.Recipients.Add(match.Value);
+                ConnectionState = ConnectionState.ReadyForData;
                 SendOkReply();
             }
             else

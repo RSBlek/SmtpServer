@@ -8,13 +8,13 @@ namespace SMTPServer
     {
         [SmtpCommandMethod("MAIL", 1)]
         [AllowConnectionState(ConnectionState.Initial)]
+        [AllowConnectionState(ConnectionState.MailTransactionStarted)]
         private void ReceiveMailCommand(String message)
         {
             mailBuffer.Clear();
-            String[] messageParts = message.Split(' ');
-            Regex regex = new Regex(@"<.*>");
-            Match match = regex.Match(messageParts[0]);
-            if (!match.Success)
+            Regex regex = new Regex(@"(?<=from:<)(.*?)(?=>)", RegexOptions.IgnoreCase);
+            Match match = regex.Match(message);
+            if (match.Success)
             {
                 mailBuffer.Sender = match.Value;
                 this.ConnectionState = ConnectionState.MailTransactionStarted;
