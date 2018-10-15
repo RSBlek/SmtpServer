@@ -19,5 +19,12 @@ namespace SMTPServer
             return smtpConnections[tcpConnection];
         }
 
+        internal SmtpConnection RemoveSmtpConnection(TcpConnection tcpConnection)
+        {
+            SmtpConnection output;
+            smtpConnections.TryRemove(tcpConnection, out output);
+            return output;
+        }
+
     }
 }

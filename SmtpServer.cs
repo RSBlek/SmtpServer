@@ -28,6 +28,7 @@ namespace SMTPServer
 
         public override void OnConnectionClosed(TcpConnection tcpConnection, CloseReason closeReason)
         {
+            connectionHandler.RemoveSmtpConnection(tcpConnection);
             Logger.Log("Disconnected");
         }
 
