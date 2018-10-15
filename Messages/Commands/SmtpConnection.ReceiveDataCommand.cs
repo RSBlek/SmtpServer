@@ -9,7 +9,7 @@ namespace SMTPServer
         [AllowConnectionState(ConnectionState.ReadyForData)]
         private void ReceiveDataCommand(String message)
         {
-            SendEhloReply();
+            SendStartMailInputReply();
         }
     }
 }

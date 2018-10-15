@@ -6,13 +6,13 @@ namespace SMTPServer
 {
     internal partial class SmtpConnection
     {
-        [SmtpCommandMethod("RCPT TO:", 1)]
+        [SmtpCommandMethod("RCPT", 1)]
         [AllowConnectionState(ConnectionState.MailTransactionStarted)]
         private void RecieveRecipientCommand(String message)
         {
-            Regex regex = new Regex(@"(?<=from:<)(.*?)(?=>)", RegexOptions.IgnoreCase);
+            Regex regex = new Regex(@"(?<=to:<)(.*?)(?=>)", RegexOptions.IgnoreCase);
             Match match = regex.Match(message);
-            if (!match.Success)
+            if (match.Success)
             {
                 mailBuffer.Recipients.Add(match.Value);
                 ConnectionState = ConnectionState.ReadyForData;
