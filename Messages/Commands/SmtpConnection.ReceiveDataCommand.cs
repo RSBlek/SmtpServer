@@ -9,6 +9,7 @@ namespace SMTPServer
         [AllowConnectionState(ConnectionState.ReadyForData)]
         private void ReceiveDataCommand(String message)
         {
+            ConnectionState = ConnectionState.ReceivingMailData;
             SendStartMailInputReply();
         }
     }

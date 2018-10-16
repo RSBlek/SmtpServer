@@ -10,7 +10,6 @@ namespace SMTPServer
         internal void SendStartMailInputReply()
         {
             SendMessage("354 Start mail input; end with <CRLF>.<CRLF>");
-            ConnectionState = ConnectionState.Initial;
         }
     }
 }
