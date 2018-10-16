@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TCPServer;
+using System.Linq;
 
 namespace SMTPServer
 {
@@ -36,14 +37,11 @@ namespace SMTPServer
             dataBuffer.AddRange(data);
             if (!CheckCommandComplete())
                 return;
-
-            String commandMessage = Encoding.ASCII.GetString(dataBuffer.ToArray(), 0, dataBuffer.Count - 2);
-            String[] commandParts = commandMessage.Split(' ');
-            Logger.Log("Received: " + commandMessage);
-
-
+            Logger.Log("Received: " + Encoding.ASCII.GetString(dataBuffer.ToArray()));
             if (this.ConnectionState != ConnectionState.ReceivingMailData)
             {
+                String commandMessage = Encoding.ASCII.GetString(dataBuffer.ToArray(), 0, dataBuffer.Count - 2);
+                String[] commandParts = commandMessage.Split(' ');
                 SmtpCommand command = GetCommand(commandParts);
                 if (command != null)
                 {
@@ -55,7 +53,8 @@ namespace SMTPServer
             }
             else if (this.ConnectionState == ConnectionState.ReceivingMailData)
             {
-                
+                mail.SetMessage(dataBuffer.SkipLast(5).ToArray());
+                SendOkReply();
             }
 
 
