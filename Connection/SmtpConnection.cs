@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using TCPServer;
 
@@ -17,7 +16,7 @@ namespace SMTPServer
         private readonly SmtpServerConfiguration serverConfiguration;
         private readonly SmtpCommandHandler commandHandler;
 
-        private readonly Mail mailBuffer = new Mail();
+        private readonly Mail mail = new Mail();
 
         public SmtpConnection(TcpConnection tcpConnection, SmtpServerConfiguration serverConfiguration, SmtpCommandHandler commandHandler)
         {
@@ -37,19 +36,28 @@ namespace SMTPServer
             dataBuffer.AddRange(data);
             if (!CheckCommandComplete())
                 return;
-            String commandMessage = Encoding.ASCII.GetString(dataBuffer.ToArray(), 0, dataBuffer.Count - 2);
-            Logger.Log("Received: " + commandMessage);
-            String[] commandParts = commandMessage.Split(' ');
-            SmtpCommand command = GetCommand(commandParts);
 
-            if (command != null)
+            String commandMessage = Encoding.ASCII.GetString(dataBuffer.ToArray(), 0, dataBuffer.Count - 2);
+            String[] commandParts = commandMessage.Split(' ');
+            Logger.Log("Received: " + commandMessage);
+
+
+            if (this.ConnectionState != ConnectionState.ReceivingMailData)
             {
-                if (command.AllowEveryConnectionState || command.AllowedConnectionStates.Contains(this.ConnectionState))
-                    command.Method.Invoke(this, new object[] { commandMessage.Substring(command.Name.Length).TrimStart() });
-                else
-                    SendBadCommandSequenceReply();
+                SmtpCommand command = GetCommand(commandParts);
+                if (command != null)
+                {
+                    if (command.AllowEveryConnectionState || command.AllowedConnectionStates.Contains(this.ConnectionState))
+                        command.Method.Invoke(this, new object[] { commandMessage.Substring(command.Name.Length).TrimStart() });
+                    else
+                        SendBadCommandSequenceReply();
+                }
             }
+            else if (this.ConnectionState == ConnectionState.ReceivingMailData)
+            {
                 
+            }
+
 
             dataBuffer.Clear();
         }
@@ -82,7 +90,7 @@ namespace SMTPServer
 
         private bool CheckCommandComplete()
         {
-            if(ConnectionState == ConnectionState.ReceivingMailData)
+            if (ConnectionState == ConnectionState.ReceivingMailData)
             {
                 if (dataBuffer.Count >= 5)
                 {

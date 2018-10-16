@@ -11,12 +11,12 @@ namespace SMTPServer
         [AllowConnectionState(ConnectionState.MailTransactionStarted)]
         private void ReceiveMailCommand(String message)
         {
-            mailBuffer.Clear();
+            mail.Clear();
             Regex regex = new Regex(@"(?<=from:<)(.*?)(?=>)", RegexOptions.IgnoreCase);
             Match match = regex.Match(message);
             if (match.Success)
             {
-                mailBuffer.Sender = match.Value;
+                mail.Sender = match.Value;
                 this.ConnectionState = ConnectionState.MailTransactionStarted;
                 SendOkReply();
             }

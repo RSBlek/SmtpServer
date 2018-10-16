@@ -14,7 +14,7 @@ namespace SMTPServer
             Match match = regex.Match(message);
             if (match.Success)
             {
-                mailBuffer.Recipients.Add(match.Value);
+                mail.Recipients.Add(match.Value);
                 ConnectionState = ConnectionState.ReadyForData;
                 SendOkReply();
             }
