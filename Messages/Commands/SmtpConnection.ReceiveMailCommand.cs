@@ -9,6 +9,8 @@ namespace SMTPServer
         [SmtpCommandMethod("MAIL", 1)]
         [AllowConnectionState(ConnectionState.Initial)]
         [AllowConnectionState(ConnectionState.MailTransactionStarted)]
+        [AllowConnectionState(ConnectionState.ReceivingMailData)]
+        [AllowConnectionState(ConnectionState.ReadyForData)]
         private void ReceiveMailCommand(String message)
         {
             mail.Clear();

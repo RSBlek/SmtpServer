@@ -20,6 +20,7 @@ namespace SMTPServer
 
         public void Clear()
         {
+            this.MimeMessage = null;
             Sender = null;
             Recipients.Clear();
         }
