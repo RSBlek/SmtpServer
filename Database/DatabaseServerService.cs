@@ -27,7 +27,7 @@ namespace SMTPServer.Database
                 smtpContext.SmtpServerInstances.Add(new SmtpServerInstance()
                 {
                     HostName = hostName,
-                    IP = ipAddress.ToString(),
+                    IP = ipAddress,
                     Port = port,
                     Timestamp = timestamp,
                 });
@@ -41,7 +41,7 @@ namespace SMTPServer.Database
             {
                 smtpContext.SmtpTcpConnections.Add(new SmtpTcpConnection()
                 {
-                    IP = ipAddress.ToString(),
+                    IP = ipAddress,
                     Port = port,
                     Timestamp = timestamp
                 });

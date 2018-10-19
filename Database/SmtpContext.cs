@@ -16,5 +16,10 @@ namespace SMTPServer.Database
         {
             optionsBuilder.UseSqlite($"Data Source={Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/SmtpDatabase.db");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SmtpTcpConnection>()
+                .HasIndex(x => x.IPBytes);
+        }
     }
 }

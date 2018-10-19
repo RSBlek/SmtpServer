@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 using System.Text;
 
 namespace SMTPServer.Database.Models
@@ -9,13 +11,27 @@ namespace SMTPServer.Database.Models
     {
         [Key]
         public Int64 ID { get; set; }
+
         [Required]
         public String HostName { get; set; }
+
+        [Column("IP")]
         [Required]
-        public String IP { get; set; }
+        [MinLength(4)]
+        [MaxLength(16)]
+        public byte[] IPBytes { get; private set; }
+
         [Required]
         public int Port { get; set; }
+
         [Required]
         public DateTime Timestamp { get; set; }
+
+        [NotMapped]
+        public IPAddress IP
+        {
+            get { return new IPAddress(IPBytes); }
+            set { IPBytes = value.GetAddressBytes(); }
+        }
     }
 }
