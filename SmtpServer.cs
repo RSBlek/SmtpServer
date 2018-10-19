@@ -4,6 +4,8 @@ using System.Net;
 using System.Text;
 using TCPServer;
 using TCPServer.Models;
+using SMTPServer.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace SMTPServer
 {
@@ -13,12 +15,15 @@ namespace SMTPServer
 
         private readonly SmtpConnectionHandler connectionHandler = new SmtpConnectionHandler();
         private readonly SmtpCommandHandler commandHandler = new SmtpCommandHandler();
+        private readonly DatabaseServerService db = new DatabaseServerService();
 
         public new void Start()
         {
             base.ConnectionBacklog = Configuration.ConnectionBacklog;
             commandHandler.Initialize();
+            db.CreateDatabase();
             base.Start();
+            db.AddSmtpServerInstance(DateTime.Now, Configuration.Name, Configuration.IPAddress, Configuration.Port);
             Logger.Log($"SMTP Server {Configuration.Name} started on {Configuration.IPAddress}:{Configuration.Port}");
         }
 
