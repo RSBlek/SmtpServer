@@ -23,7 +23,7 @@ namespace SMTPServer
             commandHandler.Initialize();
             db.CreateDatabase();
             base.Start();
-            db.AddSmtpServerInstance(DateTime.Now, Configuration.Name, Configuration.IPAddress, Configuration.Port);
+            db.AddSmtpServerInstance(Configuration.Name, Configuration.IPAddress, Configuration.Port, DateTime.Now);
             Logger.Log($"SMTP Server {Configuration.Name} started on {Configuration.IPAddress}:{Configuration.Port}");
         }
 

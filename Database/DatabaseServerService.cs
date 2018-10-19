@@ -20,16 +20,16 @@ namespace SMTPServer.Database
             }
         }
 
-        public void AddSmtpServerInstance(DateTime timestamp, String hostName, IPAddress ipAddress, int port)
+        public void AddSmtpServerInstance(String hostName, IPAddress ipAddress, int port, DateTime timestamp)
         {
             using(SmtpContext smtpContext = new SmtpContext())
             {
                 smtpContext.SmtpServerInstances.Add(new SmtpServerInstance()
                 {
-                    Timestamp = timestamp,
                     HostName = hostName,
                     IP = ipAddress.ToString(),
-                    Port = port
+                    Port = port,
+                    Timestamp = timestamp,
                 });
                 smtpContext.SaveChanges();
             }

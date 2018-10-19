@@ -53,7 +53,7 @@ namespace SMTPServer
             }
             else if (this.ConnectionState == ConnectionState.ReceivingMailData)
             {
-                mail.SetMessage(dataBuffer.SkipLast(5).ToArray());
+                mail.SetData(dataBuffer.SkipLast(5).ToArray());
                 this.ConnectionState = ConnectionState.Initial;
                 SendOkReply();
             }
