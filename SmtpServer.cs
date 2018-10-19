@@ -42,6 +42,9 @@ namespace SMTPServer
         {
             SmtpConnection smtpConnection = new SmtpConnection(tcpConnection, Configuration, commandHandler);
             connectionHandler.AddSmtpConnection(tcpConnection, smtpConnection);
+            db.AddSmtpTcpConnection(tcpConnection.ConnectionInformation.RemoteEndpoint.Address,
+                tcpConnection.ConnectionInformation.RemoteEndpoint.Port,
+                tcpConnection.ConnectionInformation.Established);
             smtpConnection.SendGreetingReply();
         }
 

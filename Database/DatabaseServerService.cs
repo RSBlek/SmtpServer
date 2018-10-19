@@ -34,5 +34,19 @@ namespace SMTPServer.Database
                 smtpContext.SaveChanges();
             }
         }
+
+        public void AddSmtpTcpConnection(IPAddress ipAddress, int port, DateTime timestamp)
+        {
+            using (SmtpContext smtpContext = new SmtpContext())
+            {
+                smtpContext.SmtpTcpConnections.Add(new SmtpTcpConnection()
+                {
+                    IP = ipAddress.ToString(),
+                    Port = port,
+                    Timestamp = timestamp
+                });
+                smtpContext.SaveChanges();
+            }
+        }
     }
 }
