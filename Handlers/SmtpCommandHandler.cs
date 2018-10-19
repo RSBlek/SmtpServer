@@ -22,6 +22,7 @@ namespace SMTPServer
                     commands.Add(command.Name, command);
                 }
             }
+            Logger.Log(commands.Count + " commands loaded");
         }
 
         public SmtpCommand GetCommand(String commandName)

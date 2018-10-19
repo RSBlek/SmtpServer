@@ -19,6 +19,7 @@ namespace SMTPServer
             base.ConnectionBacklog = Configuration.ConnectionBacklog;
             commandHandler.Initialize();
             base.Start();
+            Logger.Log($"SMTP Server {Configuration.Name} started on {Configuration.IPAddress}:{Configuration.Port}");
         }
 
         public SmtpServer(IPAddress ipAddress, int port, string name) : base(ipAddress, port)
