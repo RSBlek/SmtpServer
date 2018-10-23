@@ -21,6 +21,8 @@ namespace SMTPServer.Database.Models
         [Required]
         public Int32 Port { get; set; }
 
+        public SmtpServerInstance ServerInstance { get; set; }
+
         [Required]
         public DateTime Timestamp { get; set; }
 
